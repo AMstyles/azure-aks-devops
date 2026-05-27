@@ -64,7 +64,6 @@ jobs:
     name: Terragrunt Apply
     needs: format-validation
     runs-on: ubuntu-latest
-    environment: production
     defaults:
       run:
         working-directory: infra-tg
