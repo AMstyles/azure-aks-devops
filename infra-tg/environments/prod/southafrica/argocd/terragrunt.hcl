@@ -26,3 +26,4 @@ inputs = {
   argo_cd_helm_values_path = "${get_repo_root()}/gitops/bootstrap/argo-cd-helm.yaml"
   root_appset_path         = "${get_repo_root()}/gitops/apps/root-appset.yaml"
 }
+
