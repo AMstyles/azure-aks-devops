@@ -47,10 +47,10 @@ jobs:
 
       - name: Terragrunt Init & Plan
         run: |
-          terragrunt run --all init --non-interactive \
+          terragrunt run --all --provider-cache init --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
 
-          terragrunt run --all plan --non-interactive \
+          terragrunt run --all --provider-cache --filter-affected plan --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -69,6 +69,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Terraform
         uses: ./.github/custom-actions/setup-terraform
@@ -89,10 +91,10 @@ jobs:
 
       - name: Terragrunt Init & Apply
         run: |
-          terragrunt run --all init --non-interactive \
+          terragrunt run --all --provider-cache init --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
 
-          terragrunt run --all apply --non-interactive \
+          terragrunt run --all --provider-cache --filter-affected apply --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }} -- -auto-approve
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
