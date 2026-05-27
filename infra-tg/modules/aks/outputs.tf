@@ -23,3 +23,8 @@ output "kubelet_identity_client_id" {
   value       = azurerm_kubernetes_cluster.aks.kubelet_identity[0].client_id
   description = "Client ID of the Kubelet identity (useful for ACR pulls)"
 }
+
+output "resource_group_name" {
+  value       = azurerm_resource_group.rg.name
+  description = "The Name of the Resource Group where the AKS cluster is located"
+}
