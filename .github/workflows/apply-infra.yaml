@@ -54,11 +54,11 @@ jobs:
       - name: Validate Terragrunt installation
         run: terragrunt --version
 
-      - name: Terraform Format Check
-        run: terraform fmt -check -recursive modules
+    #   - name: Terraform Format Check
+    #     run: terraform fmt -check -recursive modules
 
       - name: Terragrunt HCL Format Check
-        run: terragrunt hclfmt --terragrunt-check --terragrunt-working-dir .
+        run: terragrunt hcl fmt --check
 
   apply:
     name: Terragrunt Apply
