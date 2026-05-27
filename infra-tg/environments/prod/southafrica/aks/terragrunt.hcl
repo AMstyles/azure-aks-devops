@@ -15,7 +15,7 @@ dependency "vnet" {
   config_path = "../vnet"
 
   mock_outputs = {
-    aks_subnet_id = "fake-id"
+    aks_subnet_id = "/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/mock-rg/providers/Microsoft.Network/virtualNetworks/mock-vnet/subnets/mock-subnet"
   }
 }
 
