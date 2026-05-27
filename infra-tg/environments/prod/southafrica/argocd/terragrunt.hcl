@@ -22,5 +22,5 @@ dependency "aks" {
 
 inputs = {
   cluster_name        = dependency.aks.outputs.cluster_name
-  resource_group_name = dependency.aks.outputs.resource_group_name
+  resource_group_name = try(dependency.aks.outputs.resource_group_name, "rg-prod-aks")
 }
