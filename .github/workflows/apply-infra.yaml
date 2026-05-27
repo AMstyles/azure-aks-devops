@@ -47,10 +47,10 @@ jobs:
 
       - name: Terragrunt Init & Plan
         run: |
-          terragrunt run --all --provider-cache init --non-interactive \
+          terragrunt run --all --provider-cache --filter-allow-destroy init --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
 
-          terragrunt run --all --provider-cache plan --non-interactive \
+          terragrunt run --all --provider-cache --filter-allow-destroy plan --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -91,10 +91,10 @@ jobs:
 
       - name: Terragrunt Init & Apply
         run: |
-          terragrunt run --all --provider-cache init --non-interactive \
+          terragrunt run --all --provider-cache --filter-allow-destroy init --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
 
-          terragrunt run --all --provider-cache apply --non-interactive \
+          terragrunt run --all --provider-cache --filter-allow-destroy apply --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }} -- -auto-approve
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
