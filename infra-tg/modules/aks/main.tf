@@ -36,6 +36,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vnet_subnet_id = var.vnet_subnet_id
     type           = "VirtualMachineScaleSets"
     tags           = var.tags
+
+    upgrade_settings {
+      max_surge = "10%"
+    }
   }
 
   identity {
@@ -67,4 +71,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "user" {
   vnet_subnet_id        = var.vnet_subnet_id
   mode                  = "User"
   tags                  = var.tags
+
+  upgrade_settings {
+    max_surge = "10%"
+  }
 }
