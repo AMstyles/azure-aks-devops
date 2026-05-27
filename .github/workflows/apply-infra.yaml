@@ -14,8 +14,8 @@ permissions:
 
 env:
   TERRAGRUNT_WORKING_DIR: environments/prod
-  TF_VERSION_FILE: .terraform-version
-  TG_VERSION_FILE: .terragrunt-version
+  TF_VERSION_FILE: infra-tg/.terraform-version
+  TG_VERSION_FILE: infra-tg/.terragrunt-version
 
 jobs:
   format-validation:
