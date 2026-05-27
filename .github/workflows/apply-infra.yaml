@@ -18,8 +18,8 @@ env:
   TG_VERSION_FILE: infra-tg/.terragrunt-version
 
 jobs:
-  format-validation:
-    name: Format & Validate
+  plan:
+    name: Terragrunt Plan
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -38,16 +38,31 @@ jobs:
         with:
           terragrunt_version_file: ${{ env.TG_VERSION_FILE }}
 
-    #   - name: Terraform Format Check
-    #     run: terraform fmt -check -recursive modules
+      - name: Azure Login (OIDC)
+        uses: ./.github/custom-actions/azure-oidc-login
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Terragrunt HCL Format Check
-        run: terragrunt hcl fmt --check
+      - name: Terragrunt Init & Plan
+        run: |
+          terragrunt run --all init --non-interactive \
+            --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
+
+          terragrunt run --all plan --non-interactive \
+            --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_USE_OIDC: "true"
 
   apply:
     name: Terragrunt Apply
-    needs: format-validation
+    needs: plan
     runs-on: ubuntu-latest
+    environment: production
     defaults:
       run:
         working-directory: infra-tg
