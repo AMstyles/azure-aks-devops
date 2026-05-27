@@ -100,10 +100,10 @@ jobs:
 
       - name: Terragrunt Init & Apply
         run: |
-          terragrunt run-all init --non-interactive \
+          terragrunt run --all init --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
 
-          terragrunt run-all apply --non-interactive \
+          terragrunt run --all apply --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }} -- -auto-approve
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
