@@ -1,0 +1,7 @@
+wordpress:
+  wordpressUsername: admin
+  wordpressPassword: password123
+  mariadb:
+    auth:
+      rootPassword: dbpassword
+      password: dbpassword
