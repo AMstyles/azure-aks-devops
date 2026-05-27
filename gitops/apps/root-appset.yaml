@@ -19,10 +19,10 @@ spec:
       source:
         repoURL: 'https://github.com/AMstyles/azure-aks-devops.git'
         targetRevision: HEAD
-        path: '{{ .path.path }}'
+        path: 'gitops/apps/{{ .path.basename }}'
       destination:
         server: 'https://kubernetes.default.svc'
-        namespace: '{{ .path.basename }}'
+        namespace: my-apps
       syncPolicy:
         automated:
           prune: true
