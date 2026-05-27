@@ -50,7 +50,7 @@ jobs:
           terragrunt run --all --provider-cache init --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
 
-          terragrunt run --all --provider-cache --filter-affected plan --non-interactive \
+          terragrunt run --all --provider-cache plan --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -94,7 +94,7 @@ jobs:
           terragrunt run --all --provider-cache init --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
 
-          terragrunt run --all --provider-cache --filter-affected apply --non-interactive \
+          terragrunt run --all --provider-cache apply --non-interactive \
             --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }} -- -auto-approve
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
