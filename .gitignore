@@ -427,3 +427,13 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Terraform and Terragrunt
+.terragrunt-cache/
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+.terragrunt-module-manifest
+.terragrunt-source-manifest
+.terragrunt-source-version
