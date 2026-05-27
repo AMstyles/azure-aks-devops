@@ -35,10 +35,10 @@ resource "helm_release" "argocd" {
   version          = "7.1.0"
 
   values = [
-    file("../../../gitops/bootstrap/argo-cd-helm.yaml"),
+    file(var.argo_cd_helm_values_path),
     yamlencode({
       extraObjects = [
-        yamldecode(file("../../../gitops/apps/root-appset.yaml"))
+        yamldecode(file(var.root_appset_path))
       ]
     })
   ]

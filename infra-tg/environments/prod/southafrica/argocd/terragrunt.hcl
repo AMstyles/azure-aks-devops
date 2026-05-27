@@ -21,6 +21,8 @@ dependency "aks" {
 }
 
 inputs = {
-  cluster_name        = dependency.aks.outputs.cluster_name
-  resource_group_name = try(dependency.aks.outputs.resource_group_name, "rg-prod-aks")
+  cluster_name             = dependency.aks.outputs.cluster_name
+  resource_group_name      = try(dependency.aks.outputs.resource_group_name, "rg-prod-aks")
+  argo_cd_helm_values_path = "${get_repo_root()}/gitops/bootstrap/argo-cd-helm.yaml"
+  root_appset_path         = "${get_repo_root()}/gitops/apps/root-appset.yaml"
 }
