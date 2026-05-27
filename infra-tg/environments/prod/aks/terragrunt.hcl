@@ -7,7 +7,6 @@ terraform {
   source = "../../../modules/aks"
 }
 
-# Define dependency on the Virtual Network deployment to pull its subnet output
 dependency "vnet" {
   config_path = "../vnet"
 }
@@ -19,7 +18,6 @@ inputs = {
   dns_prefix          = "aks-prod-dns"
   kubernetes_version  = "1.27.3"
 
-  # Fetch AKS subnet from the vnet dependency output
   vnet_subnet_id = dependency.vnet.outputs.aks_subnet_id
 
   system_node_count   = 3
