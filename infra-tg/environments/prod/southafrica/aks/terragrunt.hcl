@@ -2,8 +2,13 @@ include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
+include "region" {
+  path   = find_in_parent_folders("region.hcl")
+  expose = true
+}
+
 terraform {
-  source = "../../../modules/aks"
+  source = "../../../../modules/aks"
 }
 
 dependency "vnet" {
@@ -16,8 +21,8 @@ dependency "vnet" {
 
 inputs = {
   resource_group_name = "rg-prod-aks"
-  location            = "eastus2"
-  cluster_name        = "aks-prod-eastus2-001"
+  location            = include.region.locals.azure_region
+  cluster_name        = "aks-prod-${include.region.locals.region_short_name}-001"
   dns_prefix          = "aks-prod-dns"
   kubernetes_version  = "1.33.8"
 

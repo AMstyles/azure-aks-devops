@@ -13,7 +13,7 @@ permissions:
   id-token: write
 
 env:
-  TERRAGRUNT_WORKING_DIR: environments/prod
+  TERRAGRUNT_WORKING_DIR: environments/prod/southafrica
   TF_VERSION_FILE: infra-tg/.terraform-version
   TG_VERSION_FILE: infra-tg/.terragrunt-version
 
