@@ -9,6 +9,10 @@ terraform {
 
 dependency "vnet" {
   config_path = "../vnet"
+
+  mock_outputs = {
+    aks_subnet_id = "fake-id"
+  }
 }
 
 inputs = {
