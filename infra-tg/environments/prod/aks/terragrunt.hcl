@@ -20,7 +20,7 @@ inputs = {
   location            = "eastus2"
   cluster_name        = "aks-prod-eastus2-001"
   dns_prefix          = "aks-prod-dns"
-  kubernetes_version  = "1.33.8 "
+  kubernetes_version  = "1.33.8"
 
   vnet_subnet_id = dependency.vnet.outputs.aks_subnet_id
 
