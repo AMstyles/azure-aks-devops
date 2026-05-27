@@ -4,24 +4,25 @@ metadata:
   name: root-appset
   namespace: argocd
 spec:
+  goTemplate: true # Enables Go text/template engine
   generators:
     - git:
         repoURL: 'https://github.com/AMstyles/azure-aks-devops.git'
         revision: HEAD
         directories:
-          - path: gitops/apps/*
+          - path: gitops/apps/**
   template:
     metadata:
-      name: '{{ "{{path.basename}}" }}'
+      name: '{{ .path.basename }}'
     spec:
       project: default
       source:
         repoURL: 'https://github.com/AMstyles/azure-aks-devops.git'
         targetRevision: HEAD
-        path: '{{ "{{path}}" }}'
+        path: '{{ .path }}'
       destination:
         server: 'https://kubernetes.default.svc'
-        namespace: '{{ "{{path.basename}}" }}'
+        namespace: '{{ .path.basename }}'
       syncPolicy:
         automated:
           prune: true
