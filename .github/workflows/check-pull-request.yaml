@@ -13,14 +13,17 @@ permissions:
   id-token: write
 
 env:
-  TERRAGRUNT_WORKING_DIR: infra-tg/environments/prod
-  TF_VERSION_FILE: infra-tg/.terraform-version
-  TG_VERSION_FILE: infra-tg/.terragrunt-version
+  TERRAGRUNT_WORKING_DIR: environments/prod
+  TF_VERSION_FILE: .terraform-version
+  TG_VERSION_FILE: .terragrunt-version
 
 jobs:
   format-validation:
     name: Format & Validate
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra-tg
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,15 +55,18 @@ jobs:
         run: terragrunt --version
 
       - name: Terraform Format Check
-        run: terraform fmt -check -recursive infra-tg/modules
+        run: terraform fmt -check -recursive modules
 
       - name: Terragrunt HCL Format Check
-        run: terragrunt hclfmt --terragrunt-check --terragrunt-working-dir infra-tg
+        run: terragrunt hclfmt --terragrunt-check --terragrunt-working-dir .
 
   plan:
     name: Terragrunt Plan
     needs: format-validation
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra-tg
     steps:
       - name: Checkout
         uses: actions/checkout@v4
