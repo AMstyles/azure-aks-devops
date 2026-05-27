@@ -29,8 +29,8 @@ inputs = {
   vnet_subnet_id = dependency.vnet.outputs.aks_subnet_id
 
   system_node_count   = 1
-  system_node_vm_size = "Standard_B2s"
+  system_node_vm_size = "Standard_B2s_v2"
 
   user_node_count   = 1
-  user_node_vm_size = "Standard_B2s"
+  user_node_vm_size = "Standard_B2s_v2"
 }
