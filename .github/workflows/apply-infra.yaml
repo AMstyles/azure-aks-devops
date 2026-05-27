@@ -28,31 +28,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup tfenv
-        run: |
-          git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
-          echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
+      - name: Setup Terraform
+        uses: ./.github/custom-actions/setup-terraform
+        with:
+          terraform_version_file: ${{ env.TF_VERSION_FILE }}
 
-      - name: Install Terraform
-        run: |
-          cp ${{ env.TF_VERSION_FILE }} ~/.tfenv/version
-          tfenv install
-
-      - name: Validate Terraform installation
-        run: terraform --version
-
-      - name: Setup tgenv
-        run: |
-          git clone --depth=1 --branch main https://github.com/tgenv/tgenv.git ~/.tgenv
-          echo "$HOME/.tgenv/bin" >> $GITHUB_PATH
-
-      - name: Install Terragrunt
-        run: |
-          cp ${{ env.TG_VERSION_FILE }} ~/.tgenv/version
-          tgenv install
-
-      - name: Validate Terragrunt installation
-        run: terragrunt --version
+      - name: Setup Terragrunt
+        uses: ./.github/custom-actions/setup-terragrunt
+        with:
+          terragrunt_version_file: ${{ env.TG_VERSION_FILE }}
 
     #   - name: Terraform Format Check
     #     run: terraform fmt -check -recursive modules
@@ -71,28 +55,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup tfenv
-        run: |
-          git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
-          echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
+      - name: Setup Terraform
+        uses: ./.github/custom-actions/setup-terraform
+        with:
+          terraform_version_file: ${{ env.TF_VERSION_FILE }}
 
-      - name: Install Terraform
-        run: |
-          cp ${{ env.TF_VERSION_FILE }} ~/.tfenv/version
-          tfenv install
-
-      - name: Setup tgenv
-        run: |
-          git clone --depth=1 --branch main https://github.com/tgenv/tgenv.git ~/.tgenv
-          echo "$HOME/.tgenv/bin" >> $GITHUB_PATH
-
-      - name: Install Terragrunt
-        run: |
-          cp ${{ env.TG_VERSION_FILE }} ~/.tgenv/version
-          tgenv install
+      - name: Setup Terragrunt
+        uses: ./.github/custom-actions/setup-terragrunt
+        with:
+          terragrunt_version_file: ${{ env.TG_VERSION_FILE }}
 
       - name: Azure Login (OIDC)
-        uses: azure/login@v2
+        uses: ./.github/custom-actions/azure-oidc-login
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}

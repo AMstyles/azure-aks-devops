@@ -1,0 +1,24 @@
+name: 'Setup Terragrunt'
+description: 'Installs Terragrunt using tgenv'
+inputs:
+  terragrunt_version_file:
+    description: 'Path to the .terragrunt-version file'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Setup tgenv
+      shell: bash
+      run: |
+        git clone --depth=1 --branch main https://github.com/tgenv/tgenv.git ~/.tgenv
+        echo "$HOME/.tgenv/bin" >> $GITHUB_PATH
+
+    - name: Install Terragrunt
+      shell: bash
+      run: |
+        cp ${{ inputs.terragrunt_version_file }} ~/.tgenv/version
+        tgenv install
+
+    - name: Validate Terragrunt installation
+      shell: bash
+      run: terragrunt --version

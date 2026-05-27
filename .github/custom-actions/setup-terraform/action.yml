@@ -1,0 +1,24 @@
+name: 'Setup Terraform'
+description: 'Installs Terraform using tfenv'
+inputs:
+  terraform_version_file:
+    description: 'Path to the .terraform-version file'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Setup tfenv
+      shell: bash
+      run: |
+        git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
+        echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
+
+    - name: Install Terraform
+      shell: bash
+      run: |
+        cp ${{ inputs.terraform_version_file }} ~/.tfenv/version
+        tfenv install
+
+    - name: Validate Terraform installation
+      shell: bash
+      run: terraform --version
