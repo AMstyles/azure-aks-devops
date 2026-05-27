@@ -16,8 +16,9 @@ runs:
     - name: Install Terraform
       shell: bash
       run: |
-        cp ${{ inputs.terraform_version_file }} ~/.tfenv/version
-        tfenv install
+        TF_VERSION=$(cat ${{ inputs.terraform_version_file }})
+        tfenv install $TF_VERSION
+        tfenv use $TF_VERSION
 
     - name: Validate Terraform installation
       shell: bash

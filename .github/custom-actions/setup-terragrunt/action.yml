@@ -16,8 +16,9 @@ runs:
     - name: Install Terragrunt
       shell: bash
       run: |
-        cp ${{ inputs.terragrunt_version_file }} ~/.tgenv/version
-        tgenv install
+        TG_VERSION=$(cat ${{ inputs.terragrunt_version_file }})
+        tgenv install $TG_VERSION
+        tgenv use $TG_VERSION
 
     - name: Validate Terragrunt installation
       shell: bash
