@@ -1,0 +1,107 @@
+name: apply-infra
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "infra-tg/**"
+      - ".github/workflows/apply-infra.yaml"
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  TERRAGRUNT_WORKING_DIR: infra-tg/environments/prod
+  TF_VERSION_FILE: infra-tg/.terraform-version
+  TG_VERSION_FILE: infra-tg/.terragrunt-version
+
+jobs:
+  format-validation:
+    name: Format & Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup tfenv
+        run: |
+          git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
+          echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
+
+      - name: Install Terraform
+        run: |
+          cp ${{ env.TF_VERSION_FILE }} ~/.tfenv/version
+          tfenv install
+
+      - name: Validate Terraform installation
+        run: terraform --version
+
+      - name: Setup tgenv
+        run: |
+          git clone --depth=1 --branch main https://github.com/tgenv/tgenv.git ~/.tgenv
+          echo "$HOME/.tgenv/bin" >> $GITHUB_PATH
+
+      - name: Install Terragrunt
+        run: |
+          cp ${{ env.TG_VERSION_FILE }} ~/.tgenv/version
+          tgenv install
+
+      - name: Validate Terragrunt installation
+        run: terragrunt --version
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive infra-tg/modules
+
+      - name: Terragrunt HCL Format Check
+        run: terragrunt hclfmt --terragrunt-check --terragrunt-working-dir infra-tg
+
+  apply:
+    name: Terragrunt Apply
+    needs: format-validation
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup tfenv
+        run: |
+          git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
+          echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
+
+      - name: Install Terraform
+        run: |
+          cp ${{ env.TF_VERSION_FILE }} ~/.tfenv/version
+          tfenv install
+
+      - name: Setup tgenv
+        run: |
+          git clone --depth=1 --branch main https://github.com/tgenv/tgenv.git ~/.tgenv
+          echo "$HOME/.tgenv/bin" >> $GITHUB_PATH
+
+      - name: Install Terragrunt
+        run: |
+          cp ${{ env.TG_VERSION_FILE }} ~/.tgenv/version
+          tgenv install
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Terragrunt Init & Apply
+        run: |
+          terragrunt run-all init --terragrunt-non-interactive \
+            --terragrunt-working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
+
+          terragrunt run-all apply -auto-approve --terragrunt-non-interactive \
+            --terragrunt-working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_USE_OIDC: "true"

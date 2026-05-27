@@ -1,0 +1,57 @@
+# ArgoCD Helm Values & Bootstrapping Configuration
+# This file defines the configuration inputs used to install ArgoCD via the Helm Chart.
+# Helm Chart: argo/argo-cd (https://argoproj.github.io/argo-helm)
+
+global:
+  domain: argocd.prod.local
+
+server:
+  # Enable high-availability server setup
+  replicas: 2
+
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 75
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    hosts:
+      - argocd.prod.local
+    paths:
+      - /
+    tls:
+      - secretName: argocd-server-tls
+        hosts:
+          - argocd.prod.local
+
+  config:
+    # Enable App-of-Apps and application discovery
+    application.instanceLabelKey: argocd.argoproj.io/instance
+    # Restrict permissions or enable multi-tenancy as needed
+    users.anonymous.enabled: "false"
+
+controller:
+  replicas: 2
+  args:
+    # Scale controller performance
+    status-processors: "50"
+    operation-processors: "25"
+
+repoServer:
+  replicas: 2
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 4
+
+redis:
+  exporter:
+    enabled: true
