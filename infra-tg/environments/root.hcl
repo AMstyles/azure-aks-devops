@@ -5,7 +5,7 @@ locals {
   # Load subscription, tenant, and common environment settings
   subscription_id = get_env("ARM_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
   tenant_id       = get_env("ARM_TENANT_ID", "00000000-0000-0000-0000-000000000000")
-  
+
   default_tags = {
     Environment = "production"
     ManagedBy   = "Terragrunt"
