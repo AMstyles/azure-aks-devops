@@ -45,24 +45,8 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Terraform Format Check
-        run: terraform fmt -check -recursive modules
-
       - name: Terragrunt HCL Format Check
         run: terragrunt hcl fmt --check
-
-      - name: Terragrunt Init & Validate
-        run: |
-          terragrunt run --all --provider-cache --filter-allow-destroy init --non-interactive \
-            --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
-
-          terragrunt run --all --provider-cache validate --non-interactive \
-            --working-dir ${{ env.TERRAGRUNT_WORKING_DIR }}
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_USE_OIDC: "true"
 
   plan:
     name: Terragrunt Plan

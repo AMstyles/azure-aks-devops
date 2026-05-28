@@ -4,7 +4,7 @@ metadata:
   name: root-appset
   namespace: argocd
 spec:
-  goTemplate: true # Enables Go text/template engine
+  goTemplate: true
   generators:
     - git:
         repoURL: 'https://github.com/AMstyles/azure-aks-devops.git'
