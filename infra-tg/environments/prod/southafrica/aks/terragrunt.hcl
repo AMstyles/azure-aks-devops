@@ -31,6 +31,6 @@ inputs = {
   system_node_count   = 1
   system_node_vm_size = "Standard_B2s_v2"
 
-  user_node_count   = 2
+  user_node_count   = 1
   user_node_vm_size = "Standard_B2s_v2"
 }
