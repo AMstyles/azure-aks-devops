@@ -45,6 +45,8 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   create_namespace = true
   version          = "7.1.0"
+  timeout          = 900 # 15 minutes — HA ArgoCD install (2+ replicas per component) takes time
+  cleanup_on_fail  = true # Auto-remove failed release so re-apply doesn't hit "name still in use"
 
   values = [
     file(var.argo_cd_helm_values_path)

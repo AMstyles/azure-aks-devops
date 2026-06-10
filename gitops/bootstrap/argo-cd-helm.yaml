@@ -54,4 +54,4 @@ repoServer:
 
 redis:
   exporter:
-    enabled: true
+    enabled: false # public.ecr.aws/bitnami/redis-exporter:1.58.0 image not found on ECR public

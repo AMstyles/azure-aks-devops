@@ -3,8 +3,8 @@
 
 locals {
   # Load subscription, tenant, and common environment settings
-  subscription_id = get_env("ARM_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-  tenant_id       = get_env("ARM_TENANT_ID", "00000000-0000-0000-0000-000000000000")
+  subscription_id = get_env("ARM_SUBSCRIPTION_ID", get_env("AZURE_SUBSCRIPTION_ID", ""))
+  tenant_id       = get_env("ARM_TENANT_ID", get_env("AZURE_TENANT_ID", ""))
 
   default_tags = {
     Environment = "production"
